@@ -10,7 +10,7 @@ class Downloader():
         download_links = []
         for song in songs:
             q = "+".join(song).replace(' ', '+')
-            search_link = "https://www.youtube.com/results?search_query="+q
+            search_link = "https://www.youtube.com/results?search_query="+q+"+lyrics"
             vid_link = "https://www.youtube.com"+self.get_video_link(search_link)
             download_links.append(vid_link)
         self.download(download_links)
@@ -32,5 +32,6 @@ class Downloader():
             os.chdir('downloads')
         except:
             os.mkdir('downloads')
+            os.chdir('downloads')
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download(download_links)
