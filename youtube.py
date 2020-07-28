@@ -11,7 +11,11 @@ class Downloader():
         for song in songs:
             q = "+".join(song).replace(' ', '+')
             search_link = "https://www.youtube.com/results?search_query="+q+"+lyrics"
-            vid_link = "https://www.youtube.com"+self.get_video_link(search_link)
+            try:
+                vid_link = "https://www.youtube.com"+self.get_video_link(search_link)
+            except:
+                print(song,'skipped')
+                continue
             download_links.append(vid_link)
         self.download(download_links)
 
@@ -33,5 +37,11 @@ class Downloader():
         except:
             os.mkdir('downloads')
             os.chdir('downloads')
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            ydl.download(download_links)
+        while True:
+            try:
+                with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                    ydl.download(download_links)
+                break
+            except:
+                print('downloading failed, retrying...')
+                time.sleep(3)
